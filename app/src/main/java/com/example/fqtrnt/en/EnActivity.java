@@ -45,7 +45,7 @@ public class EnActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_en);
         pageInfo = (TextView) findViewById(R.id.pageInfo);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        final ListView listView = (ListView) findViewById(R.id.listView);
         if (null == listView) return;
         db = new DBHelper(this);
         loadDicts();
@@ -70,6 +70,7 @@ public class EnActivity extends AppCompatActivity {
         };
         listView.setOnItemLongClickListener(onItemLongClickListener);
         Button nextButton = (Button) findViewById(R.id.next);
+        assert nextButton != null;
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +81,7 @@ public class EnActivity extends AppCompatActivity {
             }
         });
         Button prevButton = (Button) findViewById(R.id.prev);
+        assert prevButton != null;
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +91,20 @@ public class EnActivity extends AppCompatActivity {
                 pageInfo.setText(String.format("%s/%s", page + 1, partition.size()));
             }
         });
-
+        final Button keepScreen = (Button) findViewById(R.id.keepScreenon);
+        assert keepScreen != null;
+        keepScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!listView.getKeepScreenOn()) {
+                    listView.setKeepScreenOn(true);
+                    keepScreen.setText(R.string.on);
+                } else {
+                    listView.setKeepScreenOn(false);
+                    keepScreen.setText(R.string.off);
+                }
+            }
+        });
     }
 
     private void loadDicts() {

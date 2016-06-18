@@ -32,7 +32,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/pageInfo"
                 android:layout_weight="1" />
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Keep"
+                android:id="@+id/keepScreenon"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
