@@ -36,7 +36,6 @@ public class EnActivity extends AppCompatActivity {
     private int showType = 0;
     private List<List<Dict>> partition = Lists.newArrayList();
     private ListItemAdapter listViewAdapter;
-    private AdapterView.OnItemLongClickListener onItemLongClickListener;
     private TextView pageInfo;
     private DBHelper db;
 
@@ -52,7 +51,7 @@ public class EnActivity extends AppCompatActivity {
 
         listViewAdapter = new ListItemAdapter(this);
         listView.setAdapter(listViewAdapter);
-        onItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 List<Dict> dicts = partition.isEmpty() ? Lists.<Dict>newArrayList() : partition.get(page);
@@ -65,10 +64,24 @@ public class EnActivity extends AppCompatActivity {
                 }
                 TextView word = (TextView) view.findViewById(R.id.word);
                 word.setText(dict.getDisplay());
-                return false;
+                return true;
             }
-        };
-        listView.setOnItemLongClickListener(onItemLongClickListener);
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                List<Dict> dicts = partition.isEmpty() ? Lists.<Dict>newArrayList() : partition.get(page);
+                Dict dict = dicts.get(i);
+                String temp = dict.getDisplay();
+                if (temp.equals(dict.getWord())) {
+                    dict.setDisplay(dict.getPhEn());
+                } else {
+                    dict.setDisplay(dict.getWord());
+                }
+                TextView word = (TextView) view.findViewById(R.id.word);
+                word.setText(dict.getDisplay());
+            }
+        });
         Button nextButton = (Button) findViewById(R.id.next);
         assert nextButton != null;
         nextButton.setOnClickListener(new View.OnClickListener() {
